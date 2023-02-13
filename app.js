@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+mongoose.set('strictQuery', false);
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true},{ useUnifiedTopology: true });
+mongoose.connect("mongodb://127.0.0.1:27017/todolistDB", {useNewUrlParser: true},{ useUnifiedTopology: true });
 
 const itemsSchema = {
   name: String
@@ -78,7 +79,6 @@ app.get("/:customListName", function(req, res){
         res.redirect("/" + customListName);
       } else {
         //Show an existing list
-
         res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
       }
     }
@@ -127,8 +127,6 @@ app.post("/delete", function(req, res){
       }
     });
   }
-
-
 });
 
 app.get("/about", function(req, res){
